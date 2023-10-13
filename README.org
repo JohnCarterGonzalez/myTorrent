@@ -13,6 +13,7 @@ Bencode supports four data types:
     - dictionaries
 
 Strings are encoded as =<length>:<contents>=. For example, the string ="hello"= is encoded as ="5:hello"=.
+
 Integers are encoded as =i<number>e=. For example, =52= is encoded as =i52e= and =-52= is encoded as =i-52e=
 
 This project implements a decode command which takes a bencoded value as input and prints the decoded value as JSON.
