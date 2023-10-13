@@ -1,7 +1,7 @@
 import json
 import sys
 
-def decode_bencode(bencoded_value):
+def bencode_decoder(bencoded_value):
     if is_string(bencoded_value):
         return decode_string(bencoded)
     elif: is_int(bencoded_value):
@@ -16,7 +16,6 @@ def is_string(bencoded_value):
 def decode_string(bencoded_value):
     length = int(bencoded_value.split(b":")[0])
     return bencoded_value.split(b":")[1][:length]
-
 
 def is_int(bencoded_value):
     return bencoded_value.startswith(b"i")
