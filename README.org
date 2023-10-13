@@ -1,4 +1,4 @@
-#+title: README
+#+title: myTorrent
 #+author: JohnCarter Gonzalez
 #+description: Entry into Torrent project
 

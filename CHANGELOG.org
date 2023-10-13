@@ -1,0 +1,5 @@
+#+title: Changelog
+
+*** 10-7-2023
+- implemented the main method that implements a decode command which takes a bencoded value as input
+  and prints the decoded value
