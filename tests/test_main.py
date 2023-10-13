@@ -21,8 +21,13 @@ def test_decode_bencode_integer():
     result = bencode_decoder(bencoded_value)
     assert result == 123
 
-def test_bencode_decoder_list_invalid():
-    bencoded_value = b"l5:helloi123ee"  # This is a list, but only ints and strings are supported atm
+def test_bencode_decoder_list():
+    bencoded_value = b"l5:helloi123ee"
+    result = bencode_decoder(bencoded_value)
+    asser result = ["hello", 52]
+
+def test_bencode_decoder_dict_invalid():
+    bencoded_value = b"d3:foo3:bar5:helloi52ee"
     with pytest.raises(NotImplementedError):
         bencode_decoder(bencoded_value)
 
