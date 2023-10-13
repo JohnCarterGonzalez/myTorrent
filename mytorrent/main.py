@@ -1,0 +1,29 @@
+import json
+import sys
+
+def decode_bencode(bencoded_value):
+    if chr(bencoded_value[0]).isdigit():
+        length = int(bencoded_value.split(b":")[0])
+        return bencoded_value.split(b":")[1][:length]
+    else:
+        raise NotImplementedError("Only strings are supported at the moment")
+
+def main():
+    command = sys.argv[1]
+    if command == "decode":
+        bencoded_value = sys.argv[2].encode()
+        # json.dumps() can't handle bytes, but bencoded "strings" need to be
+        # bytestrings since they might contain non utf-8 characters.
+        #
+        # convert to strings for printing to console
+        def bytes_to_str(data):
+            if isinstance(data, bytes):
+                return data.decode()
+            raise TypeError(f"Type not serializable: {type(data)}")
+
+        print(json.dumps(decode_bencode(bencoded_value), default=bytes_to_str))
+    else:
+        raise NotImplementedError(f"Unknown command {command}")
+
+if __name__ == "__main__":
+    main()

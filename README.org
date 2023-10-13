@@ -1,0 +1,17 @@
+#+title: README
+#+author: JohnCarter Gonzalez
+#+description: Entry into Torrent project
+
+*** Bencode (pronounced Bee-encode) is a serialization format used in the BitTorrent protocol.
+It is used in torrent files and in communication between trackers and peers.
+
+Bencode supports four data types:
+
+    - strings
+    - integers
+    - arrays
+    - dictionaries
+
+Strings are encoded as `<length>:<contents>`. For example, the string `"hello"` is encoded as `"5:hello"`.
+
+This project implements a decode command which takes a bencoded value as input and prints the decoded value as JSON.
