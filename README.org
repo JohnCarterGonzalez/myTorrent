@@ -15,3 +15,5 @@ Bencode supports four data types:
 Strings are encoded as `<length>:<contents>`. For example, the string `"hello"` is encoded as `"5:hello"`.
 
 This project implements a decode command which takes a bencoded value as input and prints the decoded value as JSON.
+
+I need a torrentProtocol for work and also personal use, and instead of using the perfectly fine bittorrent, uTorrent, and friends. I decided, for now, to see what it would be like to build my own, because learning.
