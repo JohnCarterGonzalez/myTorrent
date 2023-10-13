@@ -16,6 +16,8 @@ Strings are encoded as =<length>:<contents>=. For example, the string ="hello"= 
 
 Integers are encoded as =i<number>e=. For example, =52= is encoded as =i52e= and =-52= is encoded as =i-52e=
 
+Lists are encoded as ~l<bencoded_elements>e~. For example, ~["hello", 52]~ would be encoded as ~l5:helloi52ee~. Note that there are no separators between the elements.
+
 This project implements a decode command which takes a bencoded value as input and prints the decoded value as JSON.
 
 I need a torrentProtocol for work and also personal use, and instead of using the perfectly fine bittorrent, uTorrent, and friends. I decided, for now, to see what it would be like to build my own, because learning.
