@@ -4,9 +4,9 @@ def bencode_decoder(bencoded_value):
 def bencode_transforms(bencoded_value) -> (int, object):
     if is_string(bencoded_value):
         return decode_string(bencoded)
-    elif: is_int(bencoded_value):
+    elif is_int(bencoded_value):
         return decode_integer(bencoded_value)
-    elif: is_list(bencoded_value):
+    elif is_list(bencoded_value):
         body = bencoded_value[1:-1]
         body_length = len(body)
         decoded_list = []
@@ -15,6 +15,18 @@ def bencode_transforms(bencoded_value) -> (int, object):
             decoded_list.append(decoded_element[1])
             body = body[decoded_element[0] :]
         return body_length + 2, decoded_list
+    elif is_dict(bencoded_value):
+        body = bencoded_value[1:-1]
+        decoded_dict = {}
+
+        while len(body) > 0:
+            # decode the key and value
+            decoded_key = decoding_transforms(body)
+            decoded_value = decoding_transforms(body[len(decoded_key[0]) :])
+
+            decoded_dict[decoded_key[1].decode("utf-8")] = decoded_value[1]
+            body = body[len(decoded_key[0]) + len(decoded_value[0]) :] # remove the parts that have been decoded
+        return bencoded_value, decoded_dict
     else:
         raise NotImplementedError("Only strings are supported at the moment")
 
@@ -36,3 +48,6 @@ def decode_integer(bencoded_value):
 
 def is_list(bencoded_value):
     return bencoded_value.startswith(b"l") and bencoded_value.endswith(b"e")
+
+def is_dict(bencoded_value):
+    return bencoded_value.startswith(b"d") and bencoded_value.endswith(b"e")
