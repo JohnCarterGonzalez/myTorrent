@@ -10,6 +10,7 @@ def bencode_transforms(bencoded_value) -> (int, object):
         body = bencoded_value[1:-1]
         body_length = len(body)
         decoded_list = []
+
         while len(body) > 0:
             decoded_element = bencode_transforms(body)
             decoded_list.append(decoded_element[1])
@@ -36,8 +37,10 @@ def is_string(bencoded_value):
     return chr(bencoded_value[0].isdigit())
 
 def decode_string(bencoded_value):
-    length = int(bencoded_value.split(b":")[0])
-    return bencoded_value.split(b":")[1][:length]
+    split_value = bencoded_value.split(b":", 1)
+    length = int(split_value[0])
+    decoded_str = split[1][:length]
+    return len(str(length)) + len(decoded_str) + 1, decoded_str
 
 def is_int(bencoded_value):
     return bencoded_value.startswith(b"i")
