@@ -25,6 +25,11 @@ def decode_integer(bencoded_value):
     str_num = bencoded_value[1:end_str]
     return int(str_num)
 
+def bytes_to_str(data):
+    if isinstance(data, bytes):
+        return data.decode()
+    raise TypeError(f"Type not serializable: {type(data)}")
+
 def main():
     command = sys.argv[1]
     if command == "decode":
@@ -33,12 +38,15 @@ def main():
         # bytestrings since they might contain non utf-8 characters.
         #
         # convert to strings for printing to console
-        def bytes_to_str(data):
-            if isinstance(data, bytes):
-                return data.decode()
-            raise TypeError(f"Type not serializable: {type(data)}")
-
         print(json.dumps(decode_bencode(bencoded_value), default=bytes_to_str))
+    elif command == "info":
+        file_name = sys.argv[2]
+        with open(file_name, "rb") as f:
+            bencoded_value = f.read()
+            decoded_value = decode(bencoded_value)
+            if isinstance(decoded_value, dict):
+                print(f"Tracker URL: {decoded_value['announce'].decode()}")
+                print(f"Length: {decoded_value['info']['length']}")
     else:
         raise NotImplementedError(f"Unknown command {command}")
 

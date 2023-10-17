@@ -17,6 +17,7 @@ def bencode_transforms(bencoded_value) -> (int, object):
         return body_length + 2, decoded_list
     elif is_dict(bencoded_value):
         body = bencoded_value[1:-1]
+        body_length = len(body)
         decoded_dict = {}
 
         while len(body) > 0:
@@ -26,7 +27,7 @@ def bencode_transforms(bencoded_value) -> (int, object):
 
             decoded_dict[decoded_key[1].decode("utf-8")] = decoded_value[1]
             body = body[len(decoded_key[0]) + len(decoded_value[0]) :] # remove the parts that have been decoded
-        return bencoded_value, decoded_dict
+        return body_length + 2, decoded_dict
     else:
         raise NotImplementedError("Only strings are supported at the moment")
 

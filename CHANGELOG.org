@@ -13,3 +13,5 @@
 - implements support of decoding integers via the BitTorrent Protocol
 - implements support of decoding lists
 - add corresponding tests via Pytest
+*** 10-16-2023
+- add support and testing for decoding dictionaries
