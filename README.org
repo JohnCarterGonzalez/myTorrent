@@ -13,7 +13,9 @@ Bencode supports four data types:
     - dictionaries, are encoded as ~d<bencoded_elements>e~. For example, ~{"hello": 123, "foo": "bar",}~ would be encoded as ~d3:foo3:bar5:helloi123ee~ (notice the keys were reorganized).
 
 On parsing torrent files:
+
 A torrent file (also known as a metainfo file) contains a bencoded dictionary with the following keys and values:
+
     ~announce~:
         URL to a "tracker", which is a central server that keeps track of peers participating in the sharing of a torrent.
     ~info~:
@@ -21,5 +23,6 @@ A torrent file (also known as a metainfo file) contains a bencoded dictionary wi
             length: size of the file in bytes, for single-file torrents
             name: suggested name to save the file / directory as
             piece length: number of bytes in each piece
+
     Note: The info dictionary looks slightly different for multi-file torrents. For this challenge, we'll only implement support for single-file torrents.
 I need a torrentProtocol for work and also personal use, and instead of using the perfectly fine bittorrent, uTorrent, and friends. I decided, for now, to see what it would be like to build my own, because learning.
