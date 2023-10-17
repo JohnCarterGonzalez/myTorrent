@@ -15,3 +15,4 @@
 - add corresponding tests via Pytest
 *** 10-16-2023
 - add support and testing for decoding dictionaries
+- add support for parsing actual torrent files and associated testing
