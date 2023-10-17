@@ -24,12 +24,12 @@ def test_decode_bencode_integer():
 def test_bencode_decoder_list():
     bencoded_value = b"l5:helloi123ee"
     result = bencode_decoder(bencoded_value)
-    asser result = ["hello", 52]
+    assert result = ["hello", 52]
 
 def test_bencode_decoder_list():
     bencoded_value = b"d3:foo3:bar5:helloi123ee"
     result = bencode_decoder(bencoded_value)
-    asser result = ["hello": 123, "foo": "bar"}
+    assert result = ["hello": 123, "foo": "bar"}
 
 # def test_bencode_decoder_dict_invalid():
 #     bencoded_value = b"d3:foo3:bar5:helloi52ee"
