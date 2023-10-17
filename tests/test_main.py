@@ -26,10 +26,15 @@ def test_bencode_decoder_list():
     result = bencode_decoder(bencoded_value)
     asser result = ["hello", 52]
 
-def test_bencode_decoder_dict_invalid():
-    bencoded_value = b"d3:foo3:bar5:helloi52ee"
-    with pytest.raises(NotImplementedError):
-        bencode_decoder(bencoded_value)
+def test_bencode_decoder_list():
+    bencoded_value = b"d3:foo3:bar5:helloi123ee"
+    result = bencode_decoder(bencoded_value)
+    asser result = ["hello": 123, "foo": "bar"}
+
+# def test_bencode_decoder_dict_invalid():
+#     bencoded_value = b"d3:foo3:bar5:helloi52ee"
+#     with pytest.raises(NotImplementedError):
+#         bencode_decoder(bencoded_value)
 
 
 if __name__ == "__main__":
