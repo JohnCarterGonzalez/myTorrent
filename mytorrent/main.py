@@ -3,6 +3,8 @@ import sys
 import hashlib
 
 from app.decoder import bencode_decoder, bencode_encoder
+from app.torrent_data import TorrentData
+from app.tracker_service_api import TrackerService
 
 def bytes_to_str(data):
     if isinstance(data, bytes):
@@ -22,14 +24,26 @@ def main():
         file_name = sys.argv[2]
         with open(file_name, "rb") as f:
             bencoded_value = f.read()
-            decoded_value = bencode_decoder(bencoded_value)
-            if isinstance(decoded_value, dict):
-                print(f"Tracker URL: {decoded_value['announce'].decode()}")
-                info = decoded_value["info"]
-                print(f"Length: {info['length']}")
-                # TODO: implement bencode_encoder in decoder.py!!
-                info_hash = hashlib.sha1(bencode_encoder(info)).hexdigest()
-                print(f"Info Hash: {info_hash}")
+            torrent = TorrentData(bencoded_value)
+
+            print(f"Tracker URL: {torrent.announce}")
+            print(f"Length: {torrent.info.length}")
+            print(f"Info Hash: {torrent.get_info_hash()}")
+            print(f"Piece Length: {torrent.info.piece_length}")
+
+            print(f"Pieces Hash: ")
+            pieces_hash = torrent.get_pieces_hash()
+            for hash in pieces_hash:
+                print(hash)
+    elif command == "peers":
+        file_name = sys.argv[2]
+        with open(file_name, "rb") as f:
+            bencoded_value = f.read()
+            torrent = TorrentData(bencoded_value)
+
+            tracker_service_api = TrackerService(torrent, "12345678901234567890")
+            peers = tracker_service_api.get_peers()
+            print(peers)
     else:
         raise NotImplementedError(f"Unknown command {command}")
 
