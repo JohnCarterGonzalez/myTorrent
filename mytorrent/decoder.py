@@ -1,6 +1,20 @@
 def bencode_decoder(bencoded_value):
     return bencode_transforms(bencoded_value)[1]
 
+def bencode_encoder(bencoded_value):
+    if isinstance(value, bytes):
+        return str(len(value)).encode() + b":" + value
+    elif isinstance(value, str):
+        return encode_str(value)
+    elif isinstance(value, int):
+        return encode_int(value)
+    elif isinstance(value, list):
+        return encode_list(value)
+    elif isinstance(value, dict):
+        return encode_dict(value)
+    else:
+        raise NotImplementedError(f"Type not supported: {type(value)}")
+
 def bencode_transforms(bencoded_value) -> (int, object):
     if is_string(bencoded_value):
         return decode_string(bencoded)
@@ -36,22 +50,45 @@ def bencode_transforms(bencoded_value) -> (int, object):
 def is_string(bencoded_value):
     return chr(bencoded_value[0].isdigit())
 
-def decode_string(bencoded_value):
-    split_value = bencoded_value.split(b":", 1)
-    length = int(split_value[0])
-    decoded_str = split[1][:length]
-    return len(str(length)) + len(decoded_str) + 1, decoded_str
 
 def is_int(bencoded_value):
     return bencoded_value.startswith(b"i")
 
-def decode_integer(bencoded_value):
-    end_str = bencoded_value.index(b"e")
-    str_num = bencoded_value[1:end_str]
-    return int(str_num)
 
 def is_list(bencoded_value):
     return bencoded_value.startswith(b"l") and bencoded_value.endswith(b"e")
 
 def is_dict(bencoded_value):
     return bencoded_value.startswith(b"d") and bencoded_value.endswith(b"e")
+
+
+""" Decoder Functions"""
+def decode_integer(bencoded_value):
+    end_str = bencoded_value.index(b"e")
+    str_num = bencoded_value[1:end_str]
+    return int(str_num)
+
+def decode_string(bencoded_value):
+    split_value = bencoded_value.split(b":", 1)
+    length = int(split_value[0])
+    decoded_str = split[1][:length]
+    return len(str(length)) + len(decoded_str) + 1, decoded_str
+# TODO: implement list and dict helper functions
+def decode_list(bencoded_value):
+    pass
+
+def decode_dict(bencoded_value):
+    pass
+
+"""Encoder Functions"""
+def encode_str(value):
+    pass
+
+def encode_int(value):
+    pass
+
+def encode_list(value):
+    pass
+
+def encode_dict(value):
+    pass

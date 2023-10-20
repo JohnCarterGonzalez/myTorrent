@@ -1,29 +1,8 @@
 import json
 import sys
+import hashlib
 
-def bencode_decoder(bencoded_value):
-    if is_string(bencoded_value):
-        return decode_string(bencoded)
-    elif: is_int(bencoded_value):
-        return decode_integer(bencoded_value)
-    else:
-        raise NotImplementedError("Only strings are supported at the moment")
-
-""" Helper Functions """
-def is_string(bencoded_value):
-    return chr(bencoded_value[0].isdigit())
-
-def decode_string(bencoded_value):
-    length = int(bencoded_value.split(b":")[0])
-    return bencoded_value.split(b":")[1][:length]
-
-def is_int(bencoded_value):
-    return bencoded_value.startswith(b"i")
-
-def decode_integer(bencoded_value):
-    end_str = bencoded_value.index(b"e")
-    str_num = bencoded_value[1:end_str]
-    return int(str_num)
+from app.decoder import bencode_decoder, bencode_encoder
 
 def bytes_to_str(data):
     if isinstance(data, bytes):
@@ -38,15 +17,19 @@ def main():
         # bytestrings since they might contain non utf-8 characters.
         #
         # convert to strings for printing to console
-        print(json.dumps(decode_bencode(bencoded_value), default=bytes_to_str))
+        print(json.dumps(bencode_decoder(bencoded_value), default=bytes_to_str))
     elif command == "info":
         file_name = sys.argv[2]
         with open(file_name, "rb") as f:
             bencoded_value = f.read()
-            decoded_value = decode(bencoded_value)
+            decoded_value = bencode_decoder(bencoded_value)
             if isinstance(decoded_value, dict):
                 print(f"Tracker URL: {decoded_value['announce'].decode()}")
-                print(f"Length: {decoded_value['info']['length']}")
+                info = decoded_value["info"]
+                print(f"Length: {info['length']}")
+                # TODO: implement bencode_encoder in decoder.py!!
+                info_hash = hashlib.sha1(bencode_encoder(info)).hexdigest()
+                print(f"Info Hash: {info_hash}")
     else:
         raise NotImplementedError(f"Unknown command {command}")
 
