@@ -82,13 +82,20 @@ def decode_dict(bencoded_value):
 
 """Encoder Functions"""
 def encode_str(value):
-    pass
+    return f"{len(value)}:{value}".encode()
 
 def encode_int(value):
-    pass
+    return f"i{value}e".encode()
 
 def encode_list(value):
-    pass
+    return f"l{b''.join(map(bencode_encoder, value))}e".encode()
 
 def encode_dict(value):
-    pass
+    str_dict = b"d"
+    keys = list(value.keys())
+    keys.sort()
+    data = {key: value[key] for key in keys}
+    for k, v in data.items():
+        str_dict = str_dict + bencode_encoder(k)
+        str_dict = str_dict + bencode_encoder(v)
+    return str_dict + b"e"
