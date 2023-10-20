@@ -16,3 +16,7 @@
 *** 10-16-2023
 - add support and testing for decoding dictionaries
 - add support for parsing actual torrent files and associated testing
+*** 10-20-2023
+- add support for parsing torrent files
+- add support for calculating info hashes
+- support for discovering peers on central servers, participating in the sharing and downloading of a torrent
