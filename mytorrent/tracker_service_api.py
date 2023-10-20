@@ -15,7 +15,7 @@ class TrackerService:
         peer_id: a unique identifier for your client
             - A string of length 20 that you get to pick. You can use something like 00112233445566778899.
         port: the port your client is listening on
-            - You can set this to 6881, you will not have to support this functionality during this challenge.
+            - set to 6881 for simplicity
         uploaded: the total amount uploaded so far
             - Since your client hasn't uploaded anything yet, you can set this to 0.
         downloaded: the total amount downloaded so far
