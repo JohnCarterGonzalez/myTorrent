@@ -20,3 +20,9 @@
 - add support for parsing torrent files
 - add support for calculating info hashes
 - support for discovering peers on central servers, participating in the sharing and downloading of a torrent
+*** TODO 10-28-2023
+- added support for whole torrent file downloads
+- TODO: need to add support for multiple peers at once. Via a work queue consisting of each piece that needs to be downloaded.
+  The worker (connection with a peer) could pick a piece from the work queue, attempt to download it,
+  check the integrity, and write the downloaded piece into a buffer. Any failure (network issue, hashes not matching, peer not
+  having the piece etc.) would put the piece back into the work queue to be tried again.
