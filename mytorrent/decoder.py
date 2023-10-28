@@ -45,6 +45,7 @@ def bencode_transforms(bencoded_value) -> (int, object):
         return body_length + 2, decoded_dict
     else:
         raise NotImplementedError("Only strings are supported at the moment")
+        rea
 
 """ Helper Functions """
 def is_string(bencoded_value):

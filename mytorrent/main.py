@@ -3,6 +3,7 @@ import sys
 import hashlib
 
 from app.decoder import bencode_decoder, bencode_encoder
+from app.peer_tcp_client import PeerTcpClient
 from app.torrent_data import TorrentData
 from app.tracker_service_api import TrackerService
 
@@ -44,6 +45,17 @@ def main():
             tracker_service_api = TrackerService(torrent, "12345678901234567890")
             peers = tracker_service_api.get_peers()
             print(peers)
+    elif command == "handshake":
+        file_name = sys.argv[2]
+        peer_info = sys.argv[3]
+        with open(file_name, "rb") as f:
+            peer_ip = peer_info.split(":")[0]
+            peer_port = peer_info.split(":")[1]
+            bencoded_value = f.read()
+            torrent = TorrentData(bencoded_value)
+            peer_client = PeerTcpClient(peer_ip, int(peer_port), torrent, "12345678901234567890")
+            peer_client.connect() # establish TCP connection and perform handshake with the peer
+            peer_client.close() # close the handshake
     else:
         raise NotImplementedError(f"Unknown command {command}")
 
