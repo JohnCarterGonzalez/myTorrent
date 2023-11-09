@@ -1,29 +1,98 @@
-#+title: myTorrent
-#+author: JohnCarter Gonzalez
-#+description: Entry into Torrent project
+#+TITLE: myTorrent - BitTorrent Client
+#+AUTHOR: JohnCarter Gonzalez
 
-*** Bencode is a serialization format used in the BitTorrent protocol.
-It is used in torrent files and in communication between trackers and peers.
+* Introduction
+  myTorrent is a simple BitTorrent client that decodes bencoded torrent files and interacts with the BitTorrent network to download files. It's a command-line utility written in shell script, making use of utilities like curl for HTTP requests and standard Linux tools for data manipulation.
 
-Bencode supports four data types:
+* How It Works
+  :PROPERTIES:
+  :CUSTOM_ID: how-it-works
+  :END:
+  myTorrent works by implementing the BitTorrent protocol which includes parsing .torrent files, communicating with trackers, and handling peer connections to download files.
 
-    - strings, are encoded as =<length>:<contents>=. For example, the string ="hello"= is encoded as ="5:hello"=.
-    - integers, are encoded as =i<number>e=. For example, =52= is encoded as =i52e= and =-52= is encoded as =i-52e=
-    - arrays or lists are encoded as ~l<bencoded_elements>e~. For example, ~["hello", 52]~ would be encoded as ~l5:helloi52ee~. Note that there are no separators between the elements.
-    - dictionaries, are encoded as ~d<bencoded_elements>e~. For example, ~{"hello": 123, "foo": "bar",}~ would be encoded as ~d3:foo3:bar5:helloi123ee~ (notice the keys were reorganized).
+** Bencode Decoding
+   Bencode is the encoding format used by the BitTorrent protocol to store and transmit loosely structured data. It supports strings, integers, lists, and dictionaries. myTorrent can decode this data into JSON format.
 
-On parsing torrent files:
+** Torrent File Parsing
+   Parses .torrent files to extract key information such as announce URLs, file length, and pieces info which is essential for downloading the file.
 
-A torrent file (also known as a metainfo file) contains a bencoded dictionary with the following keys and values:
+** Tracker Interaction
+   Communicates with trackers to get a list of peers, send periodic updates, and receive a list of potential peers to connect to.
 
-    ~announce~:
-        URL to a "tracker", which is a central server that keeps track of peers participating in the sharing of a torrent.
+** Peer Communication
+   Establishes TCP connections with peers, completes handshakes, and manages data transfer including requesting pieces of the file and assembling them.
 
-    ~info~:
-        A dictionary with keys:
-            length: size of the file in bytes, for single-file torrents
-            name: suggested name to save the file / directory as
-            piece length: number of bytes in each piece
+** File Assembly
+   Once all the pieces are downloaded, myTorrent verifies each piece's integrity with SHA-1 hash checks before assembling them into the final file.
 
-    Note: The info dictionary looks slightly different for multi-file torrents. For this challenge, we'll only implement support for single-file torrents.
-I need a torrentProtocol for work and also personal use, and instead of using the perfectly fine bittorrent, uTorrent, and friends. I decided, for now, to see what it would be like to build my own, because learning.
+* Components Overview
+  :PROPERTIES:
+  :CUSTOM_ID: components-overview
+  :END:
+
+  myTorrent is divided into stages, each responsible for a specific aspect of the BitTorrent protocol:
+
+  1. Bencode Decoding
+  2. Torrent File Parsing
+  3. Tracker Communication
+  4. Peer Handshake and Data Exchange
+  5. File Download and Assembly
+
+  The below graph represents the flow of data and control through the application:
+
+  #+BEGIN_SRC ascii-art
+  [ Torrent File ]
+          |
+          v
+  [ Bencode Decoder ] ---> [ Parser ] ---> [ Tracker Requester ]
+                                            |                |
+                                            |                v
+                                            |       [ Peer Discovery ]
+                                            |                |
+                                            v                v
+                                      [ File Assembler ] <---+
+  #+END_SRC
+
+* Usage
+  :PROPERTIES:
+  :CUSTOM_ID: usage
+  :END:
+
+  Basic commands for interacting with the myTorrent client:
+
+  #+BEGIN_SRC sh
+  # To decode a bencoded string
+  ./your_bittorrent.sh decode <bencoded_string>
+
+  # To parse a torrent file and print info
+  ./your_bittorrent.sh info <path_to_torrent_file>
+
+  # To get the list of peers from the tracker
+  ./your_bittorrent.sh peers <path_to_torrent_file>
+
+  # To perform a handshake with a peer
+  ./your_bittorrent.sh handshake <path_to_torrent_file> <peer_ip>:<peer_port>
+
+  # To download a specific piece of the file
+  ./your_bittorrent.sh download_piece -o <output_path> <path_to_torrent_file> <piece_index>
+
+  # To download the entire file
+  ./your_bittorrent.sh download -o <output_path> <path_to_torrent_file>
+  #+END_SRC
+
+* Installation
+  :PROPERTIES:
+  :CUSTOM_ID: installation
+  :END:
+
+  To set up the myTorrent client on your machine, clone this repository and ensure you have the necessary dependencies installed. Instructions here...
+
+* Contributing
+  Contributions to myTorrent are welcome! If you want to contribute to the project, please fork the repository, make your changes, and submit a pull request.
+
+* License
+  :PROPERTIES:
+  :CUSTOM_ID: license
+  :END:
+
+  myTorrent is open-sourced software licensed under the [Insert License Here] license.
