@@ -95,4 +95,4 @@
   :CUSTOM_ID: license
   :END:
 
-  myTorrent is open-sourced software licensed under the [Insert License Here] license.
+  myTorrent is open-sourced software licensed under the MIT license.
